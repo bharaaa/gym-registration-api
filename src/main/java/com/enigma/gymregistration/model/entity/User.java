@@ -1,6 +1,7 @@
 package com.enigma.gymregistration.model.entity;
 
 import com.enigma.gymregistration.constant.MemberStatus;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,8 +32,10 @@ public class User {
     @Column(name = "member_status")
     private MemberStatus memberStatus;
 
-    @OneToOne
-    private Role roleId;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    @JsonBackReference
+    private Role role;
 
     //relational
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL)

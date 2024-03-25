@@ -1,8 +1,11 @@
 package com.enigma.gymregistration.model.entity;
 
 import com.enigma.gymregistration.constant.ERole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "m_role")
@@ -19,5 +22,9 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     private ERole role;
+
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<User> userList;
 
 }
