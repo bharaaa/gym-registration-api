@@ -1,7 +1,9 @@
 package com.enigma.gymregistration.controller;
 
+import com.enigma.gymregistration.model.request.LoginRequest;
 import com.enigma.gymregistration.model.request.RegisterRequest;
 import com.enigma.gymregistration.model.response.CommonResponse;
+import com.enigma.gymregistration.model.response.LoginResponse;
 import com.enigma.gymregistration.model.response.RegisterResponse;
 import com.enigma.gymregistration.service.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -61,6 +63,17 @@ public class AuthController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request){
+        LoginResponse loginResponse = authService.login(request);
+        CommonResponse<LoginResponse> response = CommonResponse.<LoginResponse>builder()
+                .message("Success login")
+                .statusCode(HttpStatus.OK.value())
+                .data(loginResponse)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
 }

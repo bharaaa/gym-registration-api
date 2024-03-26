@@ -1,12 +1,13 @@
 package com.enigma.gymregistration.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
 
 @Entity
-@Table(name = "m_class_registration")
+@Table(name = "t_class_registration")
 @Getter
 @Setter
 @Builder(toBuilder = true)
@@ -20,10 +21,12 @@ public class ClassRegistration {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User userId;
 
     @ManyToOne
     @JoinColumn(name = "gym_class_id")
+    @JsonBackReference
     private GymClass gymClassId;
 
     @Column(name = "registration_date")

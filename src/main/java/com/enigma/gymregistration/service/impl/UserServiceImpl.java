@@ -1,8 +1,6 @@
 package com.enigma.gymregistration.service.impl;
 
-import com.enigma.gymregistration.constant.ERole;
 import com.enigma.gymregistration.constant.MemberStatus;
-import com.enigma.gymregistration.model.entity.Role;
 import com.enigma.gymregistration.model.entity.User;
 import com.enigma.gymregistration.model.request.UserRequest;
 import com.enigma.gymregistration.model.response.UserResponse;
@@ -11,14 +9,13 @@ import com.enigma.gymregistration.service.RoleService;
 import com.enigma.gymregistration.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import static com.enigma.gymregistration.constant.MemberStatus.ACTIVE;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
 
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public UserResponse findUserById(String id) {
         Optional<User> optionalUser = userRepository.findUserById(id);
 
@@ -35,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
             return UserResponse.builder()
                     .id(user.getId())
-                    .userName(user.getUserName())
+                    .name(user.getName())
                     .email(user.getEmail())
                     .role(user.getRole())
                     .memberStatus(user.getMemberStatus())
@@ -46,10 +44,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponse> findAllUser() {
-        return userRepository.findAll().stream()
+        return userRepository.findAllUser().stream()
                 .map(user -> UserResponse.builder()
                         .id(user.getId())
-                        .userName(user.getUserName())
+                        .name(user.getName())
                         .email(user.getEmail())
                         .role(user.getRole())
                         .memberStatus(user.getMemberStatus())
@@ -58,27 +56,39 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(rollbackOn = Exception.class)
     public UserResponse updateUser(UserRequest request) {
         UserResponse existingUser = findUserById(request.getId());
 
-        if (existingUser != null){
-            userRepository.saveUser(
-                    existingUser.getId(),
-                    request.getUserName(),
-                    request.getEmail(),
-                    request.getPassword(),
-                    String.valueOf(existingUser.getRole()),
-                    MemberStatus.valueOf(request.getMemberStatus())
-            );
+        userRepository.updateUser(
+                request.getName(),
+                request.getEmail(),
+                request.getPassword(),
+                existingUser.getRole().getId(),
+                request.getMemberStatus(),
+                existingUser.getId()
+        );
 
-            return UserResponse.builder()
-                    .id(existingUser.getId())
-                    .userName(request.getUserName())
-                    .email(request.getEmail())
-                    .role(existingUser.getRole())
-                    .memberStatus(MemberStatus.valueOf(request.getMemberStatus()))
-                    .build();
-        }
-        return null;
+        return UserResponse.builder()
+                .id(existingUser.getId())
+                .name(request.getName())
+                .email(request.getEmail())
+                .role(existingUser.getRole())
+                .memberStatus(MemberStatus.valueOf(request.getMemberStatus()))
+                .build();
+    }
+
+    @Override
+    public User loadUserByUserId(String id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UsernameNotFoundException("email not found"));
+
+        return User.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .role(user.getRole())
+                .build();
     }
 }

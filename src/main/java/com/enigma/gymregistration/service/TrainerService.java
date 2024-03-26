@@ -6,7 +6,7 @@ import com.enigma.gymregistration.model.response.UserResponse;
 
 import java.util.List;
 
-public interface UserService {
+public interface TrainerService {
     UserResponse findUserById(String id);
     List<UserResponse> findAllUser();
     UserResponse updateUser(UserRequest request);

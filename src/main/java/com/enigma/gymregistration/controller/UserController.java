@@ -7,6 +7,7 @@ import com.enigma.gymregistration.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +33,7 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllInstalmentType(){
+    public ResponseEntity<?> getAllUser(){
         List<UserResponse> userResponses = userService.findAllUser();
         CommonResponse<List<UserResponse>> response = CommonResponse.<List<UserResponse>>builder()
                 .message("Successfully retrieved all user")
@@ -44,4 +45,19 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .body(response);
     }
+
+    @PutMapping
+    public ResponseEntity<?> updateUser(@RequestBody UserRequest request) {
+        UserResponse userResponse = userService.updateUser(request);
+        CommonResponse<UserResponse> response = CommonResponse.<UserResponse>builder()
+                .message("Successfully update user")
+                .statusCode(HttpStatus.OK.value())
+                .data(userResponse)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
 }
