@@ -18,7 +18,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, String> {
     @Modifying
     @Query(value = "INSERT INTO t_user (id, name, email, password, role_id, member_status) VALUES (?, ?, ?, ?, ?, ?)", nativeQuery = true)
-    void saveUser(String id, String username, String email, String password, String roleId, String memberStatus);
+    void saveUser(String id, String name, String email, String password, String roleId, String memberStatus);
 
     @Query(value = "SELECT * FROM t_user WHERE id = ?", nativeQuery = true)
     Optional<User> findUserById(String id);

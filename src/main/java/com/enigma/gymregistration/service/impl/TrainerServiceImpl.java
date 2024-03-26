@@ -1,11 +1,8 @@
 package com.enigma.gymregistration.service.impl;
 
-import com.enigma.gymregistration.constant.MemberStatus;
 import com.enigma.gymregistration.model.entity.Trainer;
-import com.enigma.gymregistration.model.entity.User;
 import com.enigma.gymregistration.model.request.TrainerRequest;
 import com.enigma.gymregistration.model.response.TrainerResponse;
-import com.enigma.gymregistration.model.response.UserResponse;
 import com.enigma.gymregistration.repository.TrainerRepository;
 import com.enigma.gymregistration.service.TrainerService;
 import lombok.RequiredArgsConstructor;

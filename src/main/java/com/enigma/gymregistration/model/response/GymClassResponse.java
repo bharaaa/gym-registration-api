@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GymClassResponse {
+    private String id;
     private String className;
     private String date;
     private String startTime;
