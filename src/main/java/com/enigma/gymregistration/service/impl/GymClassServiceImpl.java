@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class GymClassServiceImpl implements GymClassService {
     private final GymClassRepository gymClassRepository;
 
     @Override
-    public GymClassResponse registerClass(GymClassRequest request) {
+    public GymClassResponse addClass(GymClassRequest request) {
         String dateString = request.getDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
@@ -36,26 +37,25 @@ public class GymClassServiceImpl implements GymClassService {
             e.printStackTrace();
         }
 
-        GymClass gymClass = GymClass.builder()
-                .className(request.getClassName())
-                .date(date)
-                .startTime(LocalTime.parse(request.getStartTime()))
-                .endTime(LocalTime.parse(request.getEndTime()))
-                .build();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String startTimeString = request.getStartTime();
+        LocalTime startTime = LocalTime.parse(startTimeString, formatter);
+        String endTimeString = request.getEndTime();
+        LocalTime endTime = LocalTime.parse(endTimeString, formatter);
 
         gymClassRepository.saveClass(
-                gymClass.getId(),
-                gymClass.getClassName(),
-                String.valueOf(gymClass.getDate()),
-                String.valueOf(gymClass.getStartTime()),
-                String.valueOf(gymClass.getEndTime())
+                UUID.randomUUID().toString(),
+                request.getClassName(),
+                date,
+                startTime,
+                endTime
                 );
 
         return GymClassResponse.builder()
                 .className(request.getClassName())
-                .date(request.getDate())
-                .startTime(request.getStartTime())
-                .endTime(request.getEndTime())
+                .date(date)
+                .startTime(startTime)
+                .endTime(endTime)
                 .build();
     }
 
@@ -69,9 +69,9 @@ public class GymClassServiceImpl implements GymClassService {
             return GymClassResponse.builder()
                     .id(gymClass.getId())
                     .className(gymClass.getClassName())
-                    .date(String.valueOf(gymClass.getDate()))
-                    .startTime(String.valueOf(gymClass.getStartTime()))
-                    .endTime(String.valueOf(gymClass.getEndTime()))
+                    .date(gymClass.getDate())
+                    .startTime(gymClass.getStartTime())
+                    .endTime(gymClass.getEndTime())
                     .build();
         }
         return null;
@@ -83,9 +83,9 @@ public class GymClassServiceImpl implements GymClassService {
                 .map(gymClass -> GymClassResponse.builder()
                         .id(gymClass.getId())
                         .className(gymClass.getClassName())
-                        .date(String.valueOf(gymClass.getDate()))
-                        .startTime(String.valueOf(gymClass.getStartTime()))
-                        .endTime(String.valueOf(gymClass.getEndTime()))
+                        .date(gymClass.getDate())
+                        .startTime(gymClass.getStartTime())
+                        .endTime(gymClass.getEndTime())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -93,6 +93,21 @@ public class GymClassServiceImpl implements GymClassService {
     @Override
     public GymClassResponse updateClass(GymClassRequest request) {
         GymClassResponse existingClass = findClassById(request.getId());
+
+        String dateString = request.getDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String startTimeString = request.getStartTime();
+        LocalTime startTime = LocalTime.parse(startTimeString, formatter);
+        String endTimeString = request.getEndTime();
+        LocalTime endTime = LocalTime.parse(endTimeString, formatter);
 
         gymClassRepository.updateClass(
                 request.getClassName(),
@@ -105,9 +120,9 @@ public class GymClassServiceImpl implements GymClassService {
         return GymClassResponse.builder()
                 .id(existingClass.getId())
                 .className(request.getClassName())
-                .date(String.valueOf(request.getDate()))
-                .startTime(String.valueOf(request.getStartTime()))
-                .endTime(String.valueOf(request.getEndTime()))
+                .date(date)
+                .startTime(startTime)
+                .endTime(endTime)
                 .build();
     }
 }

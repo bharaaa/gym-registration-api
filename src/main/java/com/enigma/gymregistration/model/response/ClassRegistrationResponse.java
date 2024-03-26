@@ -1,21 +1,21 @@
 package com.enigma.gymregistration.model.response;
 
+import com.enigma.gymregistration.model.entity.GymClass;
+import com.enigma.gymregistration.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
 import java.util.Date;
 
 @Data
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class GymClassResponse {
+public class ClassRegistrationResponse {
     private String id;
-    private String className;
-    private Date date;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private User userId;
+    private GymClass gymClassId;
+    private Date registrationDate;
 }

@@ -1,12 +1,8 @@
 package com.enigma.gymregistration.controller;
 
 import com.enigma.gymregistration.model.request.GymClassRequest;
-import com.enigma.gymregistration.model.request.RegisterRequest;
-import com.enigma.gymregistration.model.request.UserRequest;
 import com.enigma.gymregistration.model.response.CommonResponse;
 import com.enigma.gymregistration.model.response.GymClassResponse;
-import com.enigma.gymregistration.model.response.RegisterResponse;
-import com.enigma.gymregistration.model.response.UserResponse;
 import com.enigma.gymregistration.service.GymClassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,10 +19,10 @@ public class GymClassController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerClass(@RequestBody GymClassRequest request) {
-        GymClassResponse registerResponse = gymClassService.registerClass(request);
+        GymClassResponse registerResponse = gymClassService.addClass(request);
 
         CommonResponse<GymClassResponse> response = CommonResponse.<GymClassResponse>builder()
-                .message("Successfully register class")
+                .message("Successfully add class")
                 .statusCode(HttpStatus.CREATED.value())
                 .data(registerResponse)
                 .build();
@@ -37,7 +33,7 @@ public class GymClassController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable String id){
+    public ResponseEntity<?> getClassById(@PathVariable String id){
         GymClassResponse gymClassResponse = gymClassService.findClassById(id);
         CommonResponse<GymClassResponse> response = CommonResponse.<GymClassResponse>builder()
                 .message("Successfully retrieved class")
@@ -51,7 +47,7 @@ public class GymClassController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllUser(){
+    public ResponseEntity<?> getAllClass(){
         List<GymClassResponse> gymClassResponses = gymClassService.findAllClass();
         CommonResponse<List<GymClassResponse>> response = CommonResponse.<List<GymClassResponse>>builder()
                 .message("Successfully retrieved all class")
@@ -65,7 +61,7 @@ public class GymClassController {
     }
 
     @PutMapping
-    public ResponseEntity<?> updateUser(@RequestBody GymClassRequest request) {
+    public ResponseEntity<?> updateClass(@RequestBody GymClassRequest request) {
         GymClassResponse gymClassResponse = gymClassService.updateClass(request);
         CommonResponse<GymClassResponse> response = CommonResponse.<GymClassResponse>builder()
                 .message("Successfully update user")

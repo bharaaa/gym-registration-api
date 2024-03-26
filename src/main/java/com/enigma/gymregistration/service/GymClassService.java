@@ -6,7 +6,7 @@ import com.enigma.gymregistration.model.response.GymClassResponse;
 import java.util.List;
 
 public interface GymClassService {
-    GymClassResponse registerClass(GymClassRequest request);
+    GymClassResponse addClass(GymClassRequest request);
     GymClassResponse findClassById(String id);
     List<GymClassResponse> findAllClass();
     GymClassResponse updateClass(GymClassRequest request);

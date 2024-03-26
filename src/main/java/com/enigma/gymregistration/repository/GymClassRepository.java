@@ -9,14 +9,17 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface GymClassRepository extends JpaRepository<GymClass, String> {
     @Modifying
+    @Transactional
     @Query(value = "INSERT INTO t_gym_class (id, class_name, date, start_time, end_time) VALUES (?, ?, ?, ?, ?)", nativeQuery = true)
-    void saveClass(String id, String className, String date, String startTime, String endTime);
+    void saveClass(String id, String className, Date date, LocalTime startTime, LocalTime endTime);
 
     @Query(value = "SELECT * FROM t_gym_class WHERE id = ?", nativeQuery = true)
     Optional<GymClass> findClassById(String id);
