@@ -1,4 +1,4 @@
-package com.enigma.gymregistration.model.request;
+package com.enigma.gymregistration.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrainerRequest {
+public class TrainerResponse {
     private String id;
     private String trainerName;
 }
