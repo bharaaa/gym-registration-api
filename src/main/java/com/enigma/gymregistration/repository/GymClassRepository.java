@@ -1,6 +1,7 @@
 package com.enigma.gymregistration.repository;
 
 import com.enigma.gymregistration.model.entity.GymClass;
+import com.enigma.gymregistration.model.entity.Trainer;
 import com.enigma.gymregistration.model.entity.User;
 import com.enigma.gymregistration.model.request.GymClassRequest;
 import jakarta.transaction.Transactional;
@@ -18,8 +19,8 @@ import java.util.Optional;
 public interface GymClassRepository extends JpaRepository<GymClass, String> {
     @Modifying
     @Transactional
-    @Query(value = "INSERT INTO t_gym_class (id, class_name, date, start_time, end_time) VALUES (?, ?, ?, ?, ?)", nativeQuery = true)
-    void saveClass(String id, String className, Date date, LocalTime startTime, LocalTime endTime);
+    @Query(value = "INSERT INTO t_gym_class (id, class_name, trainer_id, date, start_time, end_time) VALUES (?, ?, ?, ?, ?, ?)", nativeQuery = true)
+    void saveClass(String id, String className, String trainerId, Date date, LocalTime startTime, LocalTime endTime);
 
     @Query(value = "SELECT * FROM t_gym_class WHERE id = ?", nativeQuery = true)
     Optional<GymClass> findClassById(String id);
@@ -29,7 +30,7 @@ public interface GymClassRepository extends JpaRepository<GymClass, String> {
 
     @Transactional
     @Modifying
-    @Query(value = "UPDATE t_gym_class SET class_name = ?, date = ?, start_time = ?, end_time = ? WHERE id = ?", nativeQuery = true)
-    void updateClass(String className, String date, String startTime, String endTime, String id);
+    @Query(value = "UPDATE t_gym_class SET class_name = ?, trainer_id = ?, date = ?, start_time = ?, end_time = ? WHERE id = ?", nativeQuery = true)
+    void updateClass(String className, String trainerId, Date date, LocalTime startTime, LocalTime endTime, String id);
 
 }

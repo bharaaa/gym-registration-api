@@ -24,14 +24,10 @@ public class GymClass {
     @Column(name = "class_name")
     private String className;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "t_trainer_class",
-            joinColumns = @JoinColumn(name = "gym_class_id"),
-            inverseJoinColumns = @JoinColumn(name = "trainer_id")
-    )
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "trainer_id")
     @JsonBackReference
-    private List<Trainer> trainerId;
+    private Trainer trainerId;
 
     @Column(name = "date")
     private Date date;

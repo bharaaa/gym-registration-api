@@ -14,6 +14,7 @@ import java.util.List;
 public class GymClassRequest {
     private String id;
     private String className;
+    private String trainerId;
     private String date;
     private String startTime;
     private String endTime;

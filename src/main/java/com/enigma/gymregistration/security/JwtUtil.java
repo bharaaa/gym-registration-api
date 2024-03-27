@@ -6,6 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.enigma.gymregistration.model.entity.AppUser;
 import com.enigma.gymregistration.model.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -20,16 +21,16 @@ public class JwtUtil {
 
     private final String appName = "Gym Registration Application";
 
-    public String generateToken(User user){
+    public String generateToken(AppUser user){
         try {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
             String token = JWT.create()
                     .withIssuer(appName) //info untuk application name yang dibuat
                     .withSubject(user.getId()) //menentukan object yang akan dibuat, biasanya dari ID
-                    .withExpiresAt(Instant.now().plusSeconds(240))
+                    .withExpiresAt(Instant.now().plusSeconds(1000))
                     .withIssuedAt(Instant.now()) //menetapkan waktu kapan dibuat
-                    .withClaim("role",user.getRole().getRole().name())
+                    .withClaim("role",user.getRole().name())
                     .sign(algorithm); //untuk ttd kontrak / penetapan bahwa algoritma yg sudah diset diatas akan dipakai
             return token;
         }catch (JWTCreationException e){

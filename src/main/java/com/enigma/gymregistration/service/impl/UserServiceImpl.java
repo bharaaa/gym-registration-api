@@ -1,6 +1,7 @@
 package com.enigma.gymregistration.service.impl;
 
 import com.enigma.gymregistration.constant.MemberStatus;
+import com.enigma.gymregistration.model.entity.AppUser;
 import com.enigma.gymregistration.model.entity.User;
 import com.enigma.gymregistration.model.request.UserRequest;
 import com.enigma.gymregistration.model.response.UserResponse;
@@ -9,6 +10,7 @@ import com.enigma.gymregistration.service.RoleService;
 import com.enigma.gymregistration.service.UserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -79,16 +81,50 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User loadUserByUserId(String id) {
+    public UserResponse deleteUser(String id) {
+        Optional<User> optionalUser = userRepository.findUserById(id);
+
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            user.setMemberStatus(MemberStatus.INACTIVE); //soft delete
+            userRepository.saveAndFlush(user);
+
+            UserResponse.builder()
+                    .id(user.getId())
+                    .name(user.getName())
+                    .email(user.getEmail())
+                    .role(user.getRole())
+                    .memberStatus(user.getMemberStatus())
+                    .build();
+        }
+        return null;
+    }
+
+    @Override
+    public AppUser loadUserByUserId(String id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("email not found"));
 
-        return User.builder()
+        return AppUser.builder()
                 .id(user.getId())
                 .name(user.getName())
                 .email(user.getEmail())
                 .password(user.getPassword())
-                .role(user.getRole())
+                .role(user.getRole().getRole())
+                .build();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("invalid credential"));
+
+        return AppUser.builder()
+                .id(user.getId())
+                .name(user.getName())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .role(user.getRole().getRole())
                 .build();
     }
 }

@@ -2,6 +2,7 @@ package com.enigma.gymregistration.service.impl;
 
 import com.enigma.gymregistration.constant.ERole;
 import com.enigma.gymregistration.constant.MemberStatus;
+import com.enigma.gymregistration.model.entity.AppUser;
 import com.enigma.gymregistration.model.entity.Role;
 import com.enigma.gymregistration.model.entity.User;
 import com.enigma.gymregistration.model.request.LoginRequest;
@@ -19,6 +20,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -29,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final RoleService roleService;
     private final UserRepository userRepository;
     private final TrainerRepository trainerRepository;
+    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
@@ -41,7 +44,7 @@ public class AuthServiceImpl implements AuthService {
                 UUID.randomUUID().toString(),
                 request.getName(),
                 request.getEmail(),
-                request.getPassword(),
+                passwordEncoder.encode(request.getPassword()),
                 role.getId(),
                 "ACTIVE"
                 );
@@ -62,7 +65,7 @@ public class AuthServiceImpl implements AuthService {
                 UUID.randomUUID().toString(),
                 request.getName(),
                 request.getEmail(),
-                request.getPassword(),
+                passwordEncoder.encode(request.getPassword()),
                 role.getId(),
                 "ACTIVE"
         );
@@ -84,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
                 UUID.randomUUID().toString(),
                 request.getName(),
                 request.getEmail(),
-                request.getPassword(),
+                passwordEncoder.encode(request.getPassword()),
                 role.getId(),
                 "ACTIVE"
         );
@@ -106,14 +109,15 @@ public class AuthServiceImpl implements AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        User user = (User) authentication.getPrincipal();
-        String token = jwtUtil.generateToken(user);
+        AppUser appUser = (AppUser) authentication.getPrincipal();
+        String token = jwtUtil.generateToken(appUser);
 
         return LoginResponse.builder()
-                .id(user.getId())
-                .name(user.getUsername())
+                .id(appUser.getId())
+                .name(appUser.getName())
+                .email(appUser.getEmail())
                 .token(token)
-                .role(user.getRole().getRole().name())
+                .role(appUser.getRole().name())
                 .build();
     }
 }

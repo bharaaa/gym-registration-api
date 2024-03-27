@@ -60,4 +60,18 @@ public class UserController {
                 .body(response);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUserById(@PathVariable String id){
+        UserResponse userResponse = userService.deleteUser(id);
+        CommonResponse<UserResponse> response = CommonResponse.<UserResponse>builder()
+                .message("Successfully delete user")
+                .statusCode(HttpStatus.OK.value())
+                .data(userResponse)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
 }

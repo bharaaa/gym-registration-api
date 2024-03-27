@@ -1,6 +1,7 @@
 package com.enigma.gymregistration.controller;
 
 import com.enigma.gymregistration.model.request.GymClassRequest;
+import com.enigma.gymregistration.model.response.AddClassResponse;
 import com.enigma.gymregistration.model.response.CommonResponse;
 import com.enigma.gymregistration.model.response.GymClassResponse;
 import com.enigma.gymregistration.service.GymClassService;
@@ -19,9 +20,9 @@ public class GymClassController {
 
     @PostMapping("/register")
     public ResponseEntity<?> registerClass(@RequestBody GymClassRequest request) {
-        GymClassResponse registerResponse = gymClassService.addClass(request);
+        AddClassResponse registerResponse = gymClassService.addClass(request);
 
-        CommonResponse<GymClassResponse> response = CommonResponse.<GymClassResponse>builder()
+        CommonResponse<AddClassResponse> response = CommonResponse.<AddClassResponse>builder()
                 .message("Successfully add class")
                 .statusCode(HttpStatus.CREATED.value())
                 .data(registerResponse)

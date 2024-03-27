@@ -1,10 +1,11 @@
 package com.enigma.gymregistration.service.impl;
 
 import com.enigma.gymregistration.model.entity.ClassRegistration;
-import com.enigma.gymregistration.model.entity.GymClass;
+import com.enigma.gymregistration.model.entity.Trainer;
 import com.enigma.gymregistration.model.request.ClassRegistrationRequest;
 import com.enigma.gymregistration.model.response.ClassRegistrationResponse;
 import com.enigma.gymregistration.model.response.GymClassResponse;
+import com.enigma.gymregistration.model.response.UpdateRegistrationResponse;
 import com.enigma.gymregistration.repository.ClassRegistrationRepository;
 import com.enigma.gymregistration.service.ClassRegistrationService;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +13,13 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +27,7 @@ public class ClassRegistrationServiceImpl implements ClassRegistrationService {
     private final ClassRegistrationRepository classRegistrationRepository;
 
     @Override
-    public ClassRegistrationResponse registerClass(ClassRegistrationRequest request) {
+    public UpdateRegistrationResponse registerClass(ClassRegistrationRequest request) {
         String dateString = request.getRegistrationDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
@@ -40,7 +44,9 @@ public class ClassRegistrationServiceImpl implements ClassRegistrationService {
                 date
         );
 
-        return ClassRegistrationResponse.builder()
+        return UpdateRegistrationResponse.builder()
+                .userId(request.getUserId())
+                .gymClassId(request.getGymClassId())
                 .registrationDate(date)
                 .build();
     }
@@ -64,11 +70,40 @@ public class ClassRegistrationServiceImpl implements ClassRegistrationService {
 
     @Override
     public List<ClassRegistrationResponse> findAllRegistration() {
-        return null;
+        return classRegistrationRepository.findAllRegistration().stream()
+                .map(classRegistration -> ClassRegistrationResponse.builder()
+                        .id(classRegistration.getId())
+                        .userId(classRegistration.getUserId())
+                        .gymClassId(classRegistration.getGymClassId())
+                        .registrationDate(classRegistration.getRegistrationDate())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     @Override
-    public ClassRegistrationResponse updateClass(ClassRegistrationResponse request) {
-        return null;
+    public UpdateRegistrationResponse updateRegistration(ClassRegistrationRequest request) {
+        ClassRegistrationResponse existingRegistration = findRegistrationById(request.getId());
+
+        String dateString = request.getRegistrationDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = dateFormat.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        classRegistrationRepository.updateRegistration(
+                request.getUserId(),
+                request.getGymClassId(),
+                date,
+                existingRegistration.getId()
+        );
+
+        return UpdateRegistrationResponse.builder()
+                .userId(request.getUserId())
+                .gymClassId(request.getGymClassId())
+                .registrationDate(date)
+                .build();
     }
 }

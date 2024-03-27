@@ -24,7 +24,7 @@ public class SecurityConfiguration {
     private final AuthTokenFilter authTokenFilter;
 
     private static final String[] WHITE_LIST_URL = {
-            "/**"
+            "/api/auth/**"
     };
 
     @Bean
