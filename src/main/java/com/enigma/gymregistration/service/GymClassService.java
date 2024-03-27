@@ -11,4 +11,5 @@ public interface GymClassService {
     GymClassResponse findClassById(String id);
     List<GymClassResponse> findAllClass();
     GymClassResponse updateClass(GymClassRequest request);
+    GymClassResponse deleteClass(String id);
 }

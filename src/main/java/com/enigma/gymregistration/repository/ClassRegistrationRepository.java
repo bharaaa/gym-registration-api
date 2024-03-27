@@ -29,4 +29,9 @@ public interface ClassRegistrationRepository extends JpaRepository<ClassRegistra
     @Modifying
     @Query(value = "UPDATE t_class_registration SET user_id = ?, gym_class_id = ?, registration_date = ? WHERE id = ?", nativeQuery = true)
     void updateRegistration(String userId, String gymClassId, Date registrationDate, String id);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM t_class_registration WHERE id = ?", nativeQuery = true)
+    void deleteRegistrationById(String id);
 }

@@ -33,4 +33,9 @@ public interface GymClassRepository extends JpaRepository<GymClass, String> {
     @Query(value = "UPDATE t_gym_class SET class_name = ?, trainer_id = ?, date = ?, start_time = ?, end_time = ? WHERE id = ?", nativeQuery = true)
     void updateClass(String className, String trainerId, Date date, LocalTime startTime, LocalTime endTime, String id);
 
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM t_gym_class WHERE id = ?", nativeQuery = true)
+    void deleteClassById(String id);
+
 }

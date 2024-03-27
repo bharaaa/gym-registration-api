@@ -13,4 +13,5 @@ public interface ClassRegistrationService {
     ClassRegistrationResponse findRegistrationById(String id);
     List<ClassRegistrationResponse> findAllRegistration();
     UpdateRegistrationResponse updateRegistration(ClassRegistrationRequest request);
+    ClassRegistrationResponse deleteRegistration(String id);
 }

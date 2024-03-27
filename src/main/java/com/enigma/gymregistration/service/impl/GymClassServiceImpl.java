@@ -141,4 +141,24 @@ public class GymClassServiceImpl implements GymClassService {
         }
         return null;
     }
+
+    @Override
+    public GymClassResponse deleteClass(String id) {
+        Optional<GymClass> optionalGymClass = gymClassRepository.findClassById(id);
+
+        if (optionalGymClass.isPresent()){
+            GymClass gymClass = optionalGymClass.get();
+            gymClassRepository.deleteClassById(gymClass.getId());
+
+            return GymClassResponse.builder()
+                    .id(gymClass.getId())
+                    .className(gymClass.getClassName())
+                    .trainerId(gymClass.getTrainerId().getId())
+                    .date(gymClass.getDate())
+                    .startTime(gymClass.getStartTime())
+                    .endTime(gymClass.getEndTime())
+                    .build();
+        }
+        return null;
+    }
 }

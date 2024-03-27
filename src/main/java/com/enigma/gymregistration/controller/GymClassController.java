@@ -4,6 +4,7 @@ import com.enigma.gymregistration.model.request.GymClassRequest;
 import com.enigma.gymregistration.model.response.AddClassResponse;
 import com.enigma.gymregistration.model.response.CommonResponse;
 import com.enigma.gymregistration.model.response.GymClassResponse;
+import com.enigma.gymregistration.model.response.UserResponse;
 import com.enigma.gymregistration.service.GymClassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -66,6 +67,20 @@ public class GymClassController {
         GymClassResponse gymClassResponse = gymClassService.updateClass(request);
         CommonResponse<GymClassResponse> response = CommonResponse.<GymClassResponse>builder()
                 .message("Successfully update user")
+                .statusCode(HttpStatus.OK.value())
+                .data(gymClassResponse)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteClassById(@PathVariable String id){
+        GymClassResponse gymClassResponse = gymClassService.deleteClass(id);
+        CommonResponse<GymClassResponse> response = CommonResponse.<GymClassResponse>builder()
+                .message("Successfully delete class")
                 .statusCode(HttpStatus.OK.value())
                 .data(gymClassResponse)
                 .build();

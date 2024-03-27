@@ -1,7 +1,7 @@
 package com.enigma.gymregistration.service.impl;
 
 import com.enigma.gymregistration.model.entity.ClassRegistration;
-import com.enigma.gymregistration.model.entity.Trainer;
+import com.enigma.gymregistration.model.entity.GymClass;
 import com.enigma.gymregistration.model.request.ClassRegistrationRequest;
 import com.enigma.gymregistration.model.response.ClassRegistrationResponse;
 import com.enigma.gymregistration.model.response.GymClassResponse;
@@ -13,8 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -105,5 +103,23 @@ public class ClassRegistrationServiceImpl implements ClassRegistrationService {
                 .gymClassId(request.getGymClassId())
                 .registrationDate(date)
                 .build();
+    }
+
+    @Override
+    public ClassRegistrationResponse deleteRegistration(String id) {
+        Optional<ClassRegistration> optionalClassRegistration = classRegistrationRepository.findRegistrationById(id);
+
+        if (optionalClassRegistration.isPresent()){
+            ClassRegistration classRegistration = optionalClassRegistration.get();
+            classRegistrationRepository.deleteRegistrationById(classRegistration.getId());
+
+            return ClassRegistrationResponse.builder()
+                    .id(classRegistration.getId())
+                    .userId(classRegistration.getUserId())
+                    .gymClassId(classRegistration.getGymClassId())
+                    .registrationDate(classRegistration.getRegistrationDate())
+                    .build();
+        }
+        return null;
     }
 }

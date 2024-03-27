@@ -1,5 +1,6 @@
 package com.enigma.gymregistration.controller;
 
+import com.enigma.gymregistration.model.entity.ClassRegistration;
 import com.enigma.gymregistration.model.request.ClassRegistrationRequest;
 import com.enigma.gymregistration.model.response.*;
 import com.enigma.gymregistration.service.ClassRegistrationService;
@@ -65,6 +66,20 @@ public class ClassRegistrationController {
 
         CommonResponse<UpdateRegistrationResponse> response = CommonResponse.<UpdateRegistrationResponse>builder()
                 .message("Successfully update registration")
+                .statusCode(HttpStatus.OK.value())
+                .data(classRegistrationResponse)
+                .build();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteRegistrationById(@PathVariable String id){
+        ClassRegistrationResponse classRegistrationResponse = classRegistrationService.deleteRegistration(id);
+        CommonResponse<ClassRegistrationResponse> response = CommonResponse.<ClassRegistrationResponse>builder()
+                .message("Successfully delete registration")
                 .statusCode(HttpStatus.OK.value())
                 .data(classRegistrationResponse)
                 .build();
