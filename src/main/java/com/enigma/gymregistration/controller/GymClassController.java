@@ -1,10 +1,10 @@
 package com.enigma.gymregistration.controller;
 
+import com.enigma.gymregistration.constant.AppPath;
 import com.enigma.gymregistration.model.request.GymClassRequest;
 import com.enigma.gymregistration.model.response.AddClassResponse;
 import com.enigma.gymregistration.model.response.CommonResponse;
 import com.enigma.gymregistration.model.response.GymClassResponse;
-import com.enigma.gymregistration.model.response.UserResponse;
 import com.enigma.gymregistration.service.GymClassService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/gym-class")
+@RequestMapping(AppPath.GYM_CLASS)
 @RequiredArgsConstructor
 public class GymClassController {
     private final GymClassService gymClassService;
 
-    @PostMapping("/register")
+    @PostMapping(AppPath.ADD_CLASS)
     public ResponseEntity<?> registerClass(@RequestBody GymClassRequest request) {
         AddClassResponse registerResponse = gymClassService.addClass(request);
 
@@ -34,7 +34,7 @@ public class GymClassController {
                 .body(response);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(AppPath.GET_BY_ID)
     public ResponseEntity<?> getClassById(@PathVariable String id){
         GymClassResponse gymClassResponse = gymClassService.findClassById(id);
         CommonResponse<GymClassResponse> response = CommonResponse.<GymClassResponse>builder()
@@ -76,7 +76,7 @@ public class GymClassController {
                 .body(response);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(AppPath.GET_BY_ID)
     public ResponseEntity<?> deleteClassById(@PathVariable String id){
         GymClassResponse gymClassResponse = gymClassService.deleteClass(id);
         CommonResponse<GymClassResponse> response = CommonResponse.<GymClassResponse>builder()

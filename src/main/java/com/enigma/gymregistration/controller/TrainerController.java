@@ -1,8 +1,8 @@
 package com.enigma.gymregistration.controller;
 
+import com.enigma.gymregistration.constant.AppPath;
 import com.enigma.gymregistration.model.response.CommonResponse;
 import com.enigma.gymregistration.model.response.TrainerResponse;
-import com.enigma.gymregistration.model.response.UserResponse;
 import com.enigma.gymregistration.service.TrainerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/trainer")
+@RequestMapping(AppPath.TRAINER)
 @RequiredArgsConstructor
 public class TrainerController {
     private final TrainerService trainerService;
 
-    @GetMapping("/{id}")
+    @GetMapping(AppPath.GET_BY_ID)
     public ResponseEntity<?> getTrainerById(@PathVariable String id){
         TrainerResponse trainerResponse = trainerService.findTrainerById(id);
         CommonResponse<TrainerResponse> response = CommonResponse.<TrainerResponse>builder()

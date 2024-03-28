@@ -1,5 +1,6 @@
 package com.enigma.gymregistration.controller;
 
+import com.enigma.gymregistration.constant.AppPath;
 import com.enigma.gymregistration.model.request.UserRequest;
 import com.enigma.gymregistration.model.response.CommonResponse;
 import com.enigma.gymregistration.model.response.UserResponse;
@@ -7,18 +8,17 @@ import com.enigma.gymregistration.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping(AppPath.USER)
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/{id}")
+    @GetMapping(AppPath.GET_BY_ID)
     public ResponseEntity<?> getUserById(@PathVariable String id){
         UserResponse userResponse = userService.findUserById(id);
         CommonResponse<UserResponse> response = CommonResponse.<UserResponse>builder()
@@ -60,7 +60,7 @@ public class UserController {
                 .body(response);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(AppPath.GET_BY_ID)
     public ResponseEntity<?> deleteUserById(@PathVariable String id){
         UserResponse userResponse = userService.deleteUser(id);
         CommonResponse<UserResponse> response = CommonResponse.<UserResponse>builder()

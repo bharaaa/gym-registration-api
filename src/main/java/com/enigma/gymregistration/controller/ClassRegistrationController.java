@@ -1,6 +1,6 @@
 package com.enigma.gymregistration.controller;
 
-import com.enigma.gymregistration.model.entity.ClassRegistration;
+import com.enigma.gymregistration.constant.AppPath;
 import com.enigma.gymregistration.model.request.ClassRegistrationRequest;
 import com.enigma.gymregistration.model.response.*;
 import com.enigma.gymregistration.service.ClassRegistrationService;
@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/class-registration")
+@RequestMapping(AppPath.CLASS_REGISTRATION)
 @RequiredArgsConstructor
 public class ClassRegistrationController {
     private final ClassRegistrationService classRegistrationService;
 
-    @PostMapping("/register")
+    @PostMapping(AppPath.REGISTER_CLASS)
     public ResponseEntity<?> registerClass(@RequestBody ClassRegistrationRequest request) {
         UpdateRegistrationResponse classRegistrationResponse = classRegistrationService.registerClass(request);
 
@@ -32,7 +32,7 @@ public class ClassRegistrationController {
                 .body(response);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(AppPath.GET_BY_ID)
     public ResponseEntity<?> getRegistrationById(@PathVariable String id){
         ClassRegistrationResponse classRegistrationResponse = classRegistrationService.findRegistrationById(id);
         CommonResponse<ClassRegistrationResponse> response = CommonResponse.<ClassRegistrationResponse>builder()
@@ -75,7 +75,7 @@ public class ClassRegistrationController {
                 .body(response);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(AppPath.GET_BY_ID)
     public ResponseEntity<?> deleteRegistrationById(@PathVariable String id){
         ClassRegistrationResponse classRegistrationResponse = classRegistrationService.deleteRegistration(id);
         CommonResponse<ClassRegistrationResponse> response = CommonResponse.<ClassRegistrationResponse>builder()

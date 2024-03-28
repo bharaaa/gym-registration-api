@@ -1,5 +1,6 @@
 package com.enigma.gymregistration.controller;
 
+import com.enigma.gymregistration.constant.AppPath;
 import com.enigma.gymregistration.model.request.LoginRequest;
 import com.enigma.gymregistration.model.request.RegisterRequest;
 import com.enigma.gymregistration.model.response.CommonResponse;
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping(AppPath.AUTHENTICATION)
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
 
-    @PostMapping("/register-admin")
+    @PostMapping(AppPath.REGISTER_ADMIN)
     public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequest request) {
         RegisterResponse registerResponse = authService.registerAdmin(request);
 
@@ -35,7 +36,7 @@ public class AuthController {
                 .body(response);
     }
 
-    @PostMapping("/register-trainer")
+    @PostMapping(AppPath.REGISTER_TRAINER)
     public ResponseEntity<?> registerTrainer(@RequestBody RegisterRequest request) {
         RegisterResponse registerResponse = authService.registerTrainer(request);
 
@@ -50,7 +51,7 @@ public class AuthController {
                 .body(response);
     }
 
-    @PostMapping("/register-member")
+    @PostMapping(AppPath.REGISTER_MEMBER)
     public ResponseEntity<?> registerMember(@RequestBody RegisterRequest request) {
         RegisterResponse registerResponse = authService.registerMember(request);
 
@@ -65,7 +66,7 @@ public class AuthController {
                 .body(response);
     }
 
-    @PostMapping("/login")
+    @PostMapping(AppPath.LOGIN)
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
         LoginResponse loginResponse = authService.login(request);
         CommonResponse<LoginResponse> response = CommonResponse.<LoginResponse>builder()
