@@ -26,12 +26,12 @@ public class JwtUtil {
             Algorithm algorithm = Algorithm.HMAC256(jwtSecret.getBytes(StandardCharsets.UTF_8));
 
             String token = JWT.create()
-                    .withIssuer(appName) //info untuk application name yang dibuat
-                    .withSubject(user.getId()) //menentukan object yang akan dibuat, biasanya dari ID
+                    .withIssuer(appName)
+                    .withSubject(user.getId())
                     .withExpiresAt(Instant.now().plusSeconds(1000))
-                    .withIssuedAt(Instant.now()) //menetapkan waktu kapan dibuat
-                    .withClaim("role",user.getRole().name())
-                    .sign(algorithm); //untuk ttd kontrak / penetapan bahwa algoritma yg sudah diset diatas akan dipakai
+                    .withIssuedAt(Instant.now())
+                    .withClaim("role", user.getRole().toString())
+                    .sign(algorithm);
             return token;
         }catch (JWTCreationException e){
             throw new RuntimeException();
