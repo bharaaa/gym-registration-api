@@ -24,11 +24,11 @@ This project is created with:
 
 ## Installation
 Follow these steps to run the Gym Registration API project locally:
-1. Clone the repository
+1. Clone the repository.
 ```shell
 https://github.com/bharaaa/gym_registration_api.git
 ```
-2. Open the project in your IDE.,e.g., Visual Studio Code, IntelliJ IDEA
+2. Open the project in your IDE.,e.g., Visual Studio Code, IntelliJ IDEA.
 3. Connect to your PostgreSQL database, you can adjust the configuration in application.properties file.
 4. Once the application is running, you can access the API using a tool like Postman.
 5. The base URL for accessing the API is http://localhost:8080/api/.
