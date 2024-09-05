@@ -10,10 +10,7 @@ import com.enigma.gymregistration.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(AppPath.AUTHENTICATION)
@@ -66,6 +63,7 @@ public class AuthController {
                 .body(response);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(AppPath.LOGIN)
     public ResponseEntity<?> login(@RequestBody LoginRequest request){
         LoginResponse loginResponse = authService.login(request);
