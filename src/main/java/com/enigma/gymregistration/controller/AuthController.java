@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final AuthService authService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(AppPath.REGISTER_ADMIN)
     public ResponseEntity<?> registerAdmin(@RequestBody RegisterRequest request) {
         RegisterResponse registerResponse = authService.registerAdmin(request);
@@ -33,6 +34,7 @@ public class AuthController {
                 .body(response);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(AppPath.REGISTER_TRAINER)
     public ResponseEntity<?> registerTrainer(@RequestBody RegisterRequest request) {
         RegisterResponse registerResponse = authService.registerTrainer(request);
@@ -48,6 +50,7 @@ public class AuthController {
                 .body(response);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping(AppPath.REGISTER_MEMBER)
     public ResponseEntity<?> registerMember(@RequestBody RegisterRequest request) {
         RegisterResponse registerResponse = authService.registerMember(request);
